@@ -1,0 +1,243 @@
+//定义一个单链表
+struct LNode//定义单链表结点类型
+{
+    ElemType data;//每个节点存放一个数据元素（数据域）
+    struct LNode *next;//指针指向下一个节点（指针域）
+};
+typedef struct LNode LNode;
+//增加一个新结点：在内存中申请一个结点所需的空间，并且用指针p指向这个结点
+LNode*p = (LNode*)malloc(sizeof(LNode)); 
+
+//带头结点的单链表
+typedef struct LNode{
+    ElemType data;
+    struct LNode *next;
+}LNode,*LinkList;
+bool InitList(LinkList &L){
+    L = (LNode*)malloc(sizeof(LNode));//分配一个头结点
+    if(L==NULL){//内存不足分配失败
+        return false;
+    }L->next = NULL;//头结点之后暂时还没有结点(指针域是空的)
+    return true;
+}
+void test(){
+    LinkList L;//声明一个指向单链表的指针
+    InitList(L);//初始化一个空表
+}
+
+////////////////插入
+typedef struct LNode{
+    ElemType data;
+    struct LNode *next;
+}LNode,*LinkList;
+//在第i个位置插入e（带头结点）
+bool ListInsert(LinkList &L,int i,ElemType e){
+    LNode *p;//指针p指向当前扫描到的结点
+    int j =0;//p当前指向的是第几个结点
+    p = L;//L指向头结点，第0个结点，不存数据
+    while (p!=NULL && j<i-1){
+        p = p->next;
+        j++;
+    }
+    if(p=NULL){//i值不合法
+        return false;
+    }
+    LNode *s = (LNode*)malloc(sizeof(LNode));
+    s->data = e;
+    s->next = p->next;
+    p->next = s;//将结点s连接到p之后
+    return true;
+}
+//不带头结点
+typedef struct LNode{
+    ElemType data;
+    struct LNode *next;
+}LNode,*LinkList;
+
+bool ListInsert(LinkList &L,int i,ElemType e){
+    if (i < 1){
+        return false;
+    }
+    if(i == 1){//插入第一个结点的操作和其他结点的操作不同
+        LNode*s = (LNode *)malloc(sizeof(LNode));
+        s->data = e;
+        s->next = L;
+        L = s;//头指针指向新结点
+        return true;
+    }
+    LNode *p;
+    int j = 1;
+    p = L;//p指向第一个结点，不是头结点
+    while (p!= NULL&&j<i-1){//循环找到第i-1个结点
+        p=p->next;
+        j++;
+    }
+    if(p == NULL){//i值不合法
+        return false;
+    }
+    LNode*s = (LNode*)malloc(sizeof(LNode));
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+    return true;
+}//不带头结点写代码更不方便，推荐用带头结点的
+
+//后插：在p结点之后插入元素
+bool InsertNextNode (LNode *p,ElemType e){
+    if(p == null){
+        return false;
+    }
+    LNode*s = (Lnode *)malloc(sizeof(LNode));
+    if(s==NULL){
+        return false;
+    }
+    s->data = e;
+    s->next = p->next;
+    p->next = s;
+    return true;
+}
+//前插：在p结点之前插入
+bool InsertPriorNode(LinkList L,LNode *p,ElemType e)//传入头指针
+//或者另一种方法（先插入结点再交换数据）
+bool InsertPriorNode(LNode *p,ElemType e){
+    if(p == NULL){
+        return false;
+    }
+    LNode*s = (LNode*)malloc(sizeof(LNode));
+    if(s == NULL){
+        return false;
+    }
+    s->next = p->next;
+    p->next = s;//新结点连到p之后
+    s->data = p->data;//将p的值给s
+    p->data = e;//将要插入的值赋给p
+    return true;
+}
+
+////////////////按位序删除（带头结点）
+//删除表中第i个位置的元素，就是找到第i-1个结点，将其指针指向第i+1个结点，并释放第i个结点
+typedef struct LNode{
+    ELemType data;
+    struct LNode *next;
+}LNode,*LinkList;
+
+bool ListDelete(LinkList &L,int i,ElemType &e){
+    if(i<1){
+        return false;
+    }
+    LNode *p;//指针指向当前扫描到的结点
+    int j =0;//当前指向的是第几个结点
+    p = L;//L指向头结点，头结点是第0个结点，不存数据
+    while(p!= NULL && j<i-1){//循环找到第i-1个结点
+        p=p->next;
+        j++;
+    }
+    if(p==NULL){//i值不合法
+        return false;
+    }
+    if(p->next == NULL){//第i-1个结点之后没有其他的结点
+        return false;
+    }
+    LNode *q = p->next;//令q是被删除的结点
+    e = q->data;//用e来保存要删除的值
+    p->next = q->next;//将q结点断开
+    free(q);//释放结点的存储空间
+    return true;
+}
+////删除指定结点p 
+bool DeleteNode (LNode *p){
+    if(p==NULL){
+        return false;
+    }
+    LNode *q = p->next;//令q是p的后继结点
+    p->data = p->next->data;//和后继结点交换数据
+    p->next = q->next;//将q结点断开
+    free(q);//释放后继结点的存储空间
+    return true;
+}
+////如果p是最后一个结点，只能从表头开始依次寻找p的前驱，时间复杂度O（n）
+
+
+//////////////单链表的查找
+//按位查找返回第i个元素，带头结点
+LNode *GetElem(LinkList L,int i){
+    if(i<0){
+        return NULL;
+    }
+    LNode *P;
+    int j = 0;
+    p = L;
+    while (p!= NULL&&j<i){
+        p = p->next;
+        j++;
+    }
+    return p;
+}
+////////按值查找
+LNode *LocateElem(LinkList L,int e){
+    LNode *p = L->next;//从第一个结点开始查找e的结点
+    while (p!= NULL && e!= p->data){
+        p = p->next;
+        return p;//找到后返回该结点的指针，否则返回NULL
+    }
+}
+/////求表的长度
+int length(LinkList L){
+    int len = 0;
+    LNode *p = L;
+    while (p->next != NULL){
+        p = p->next;
+        len++;
+    }
+    return len;
+}
+
+//////////////////////////单链表的建立
+//尾插法
+typedef struct LNode{//定义单链表结点类型
+    ElemType data;//每个结点存放一个数据元素
+    struct LNode *next;//指针指向下一个结点
+}LNode,*LinkList;
+//初始化一个单链表（带头结点）
+bool InitList(LinkList &L){
+    L = (LNode *)malloc(sizeof(LNode));//分配一个头结点
+    if(L==NULL){//内存不足
+        return false;
+    L->next = NULL;//头结点之后暂时还没有结点
+    return true;
+    }
+    void test(){
+        LinkList L;//声明一个指向单链表的指针
+        InitList(L);//初始化一个空表
+    }
+
+}
+//例
+LinkList list1(LinkList &L){
+    int x;
+    L = (LinkList)malloc(sizeof(LNode));
+    LNode*s,*r=L;
+    scanf("%d",&x);
+    while(x!= 999){
+        s = (LNode *)malloc(sizeof(LNode));
+        s->data = x;
+        r->next = s;
+        r = s;
+        scanf("%d",&x);
+    }
+    r->next = NULL;
+    return L;
+}
+/////头插法建立单链表
+//后插操作，在p结点之后插入元素e
+bool InsertNextNode (LNode *p,int e){
+    if(p == NULL)
+        return false;
+    LNode*s =(LNode*)malloc(sizeof(LNode));
+    if(s==NULL)
+        return false;
+    s->data =e;
+    s->next = p->next;
+    p->next = s;
+    return true;
+}
