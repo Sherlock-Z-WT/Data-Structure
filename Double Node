@@ -1,0 +1,69 @@
+//初始化双链表
+typedef struct DNode
+{
+    ElemType data;
+    struct DNode *prior,*next
+}DNode,*DLinklist;
+
+
+bool InitDLinkList(DLinklist &L){
+    L = (DNode *)malloc(sizeof(DNode));//分配一个头结点
+    if(L ==NULL)//内存不足，分配失败
+        return false;
+    L->prior = NULL;//头结点的prior永远指向NULL
+    L->next = NULL;//头结点之后暂时没有结点
+    return true;
+}
+
+void testDlinkList(){
+    DLinklist L;//初始化双链表
+    InitDLinkList(L);
+}
+
+//双链表的插入
+bool InsertNextDNode(DNode *p,DNode *s){
+    if(p == NULL||s == NULL)
+        return false;
+    s->next = p->next;
+    if(p->next != NULL)
+        p->next->prior = s;
+    s->prior = p;
+    p->next = s;
+}
+//双链表的删除
+bool DeleteNextDNode(DNode *p){
+    if(p == NULL)
+        return false;
+    DNode *q = p->next;
+    if(q == NULL)
+        return false;
+    p->next = q->next;
+    if(q ->next !=NULL)
+        q->next->prior = p;
+    free(q);
+    return true;
+}
+//双链表的遍历
+while(p!=NULL){
+    p=p->next;//后向遍历
+}
+while(p!= NULL){
+    p=p->prior;//前向遍历
+}
+
+///////////循环单链表
+L->next = L;//头结点next指向头结点
+p->next = L;//最后一个结点指向L
+///////////循环双链表
+//表尾结点的next指向头结点，表头结点的prior指向尾结点
+//双链表的插入
+bool InsertNextDNode(DNode *p,DNode *s){
+    s->next = p->next;
+    p->next->prior = s;
+    s->prior = p;
+    p->next = s;
+}
+//双链表的删除
+p->next = q->next;
+q->next->prior = p;
+free(q);
