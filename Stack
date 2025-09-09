@@ -1,0 +1,87 @@
+////栈
+//仅表尾进行插入和删除
+//last in first out 先出后进
+//栈顶=表尾 栈底=表头 入栈（表尾插入元素）出栈（表尾删除元素）
+//initstack 初始化栈 destroy销毁栈 push入栈 pop出栈 gettop读栈顶元素
+//只可在栈顶进行
+//顺序栈
+#define MaxSize 10
+typedef struct 
+{
+    ElemType data[MaxSize];
+    int top;//栈顶指针
+}Sqstack;
+top = -1//栈空
+/////入栈
+bool Push(Sqstack &S,ElemType x){
+    if(S.top == MaxSize -1)//栈满报错
+        return false;
+    S.top = S.top + 1;//指针+1
+    S.data[S.top] = x;//入栈
+    //等价于S.data[++S.top] = x   不是S.top++!!
+}
+/////出栈
+bool Pop(Sqstack &s,ElemType x){
+    if(S.top == -1)
+        return false;//栈空报错
+    x = S.data[S.top];
+    S.top = S.top - 1;
+    //等价于S.data[S.top--] = x  注意top是栈顶元素还是后一个
+    return true;
+}
+/////读栈顶
+bool GetTop(Sqstack &s,ElemType x){
+    if(S.top == -1)
+        return false;
+    x = S.data[S.top];
+    return true;
+}
+
+
+///////////链栈
+typedef struct Linknode{
+    ElemType data;
+    struct Linknode *next;
+}*LiStack;
+//初始化栈
+void InitStack(LiStack *top){
+    *top = NULL;//初始化栈顶指针为空
+}
+LiStack S;
+InitStack(&S);
+//判断是否为空
+bool StackEmpty(LiStack top){
+    if(top == NULL){
+        return false;
+    }
+}
+//入栈
+bool Push(LiStack *top,ElemType e){
+    Linknode *p = (Linknode*)malloc(sizeof(Linknode));
+    p->data = e;
+    p->next = *top;
+    *top = p;
+    return true;
+}
+//出栈
+bool Pop(LiStack *top,ElemType *e){
+    if(StackEmpty(*top)) return false;
+    Linknode *p = *top;
+    *e = p->data;
+    *top = p->next;
+    free(p);
+    return true;
+}
+//获取栈顶元素
+bool GetTop(LiStack top,ElemType *e){
+    if(StackEmpty(top)) return false;
+    *e = top->data;
+    return true;
+}
+//销毁栈
+void DestroyStack(LiStack *top){
+    ElemType e;
+    while (*top != NULL){
+        Pop(top,&e);
+    }
+}
