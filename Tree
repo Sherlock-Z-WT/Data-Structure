@@ -213,3 +213,38 @@ int main() {
     
     return 0;
 }
+
+//构造二叉树 只给前中后序遍历中的一种，不能唯一确定一颗二叉树，必须有中序才能确定
+//树的存储结构
+//双亲表示法
+//两个数组，一个data一个parent，一一对应
+#define Max 100
+typedef struct {
+    ElemType data;
+    int parent;
+}PTNode;
+typedef struct{
+    PTNode node[Max];
+    int n;
+}PTree;
+//孩子表示法
+//两个数组，一个data，一个*firstchild
+struct CTNode{
+    int child;
+    struct CTNode *next;
+};
+typedef struct{
+    ElemType data;
+    struct CTNode*firstchild;
+}CTBox;
+typedef struct{
+    CTBox node[Max];
+    int n,r;
+}CTree;
+//孩子兄弟表示法
+//左牵孩子，右牵兄弟
+typedef struct CSNode{
+    ElemType data;
+    struct CSNode*firstchild,*nextsibling;
+}CSNode,*CSTree;
+
