@@ -245,6 +245,35 @@ typedef struct{
 //左牵孩子，右牵兄弟
 typedef struct CSNode{
     ElemType data;
+////////////////////并查集
+//用互不相交的树表示多个集合
+//并：让一棵树变成另一颗的子树  查：查他的根节点
+#define size 13
+int ufsets [size];
+void Initial(int s[]){
+    for(int i = 0;i < size;i++);
+    s[i] = -1;
+}
+int find (int s[],int x){
+    while(s[x] >= 0)
+        x=s[x];
+    return x;
+}
+void union(int s[],int root1,int root2){
+    if(root1 == root2)
+        return;
+    s[root2]=root1;
+}
+//union的优化：小树合并到大树
+void union(int s[],int root1,int root2){
+    if(root1 == root2)
+        return;
+    if(s[root2]>s[root1])
+        s[root2]=root1;
+    else
+        s[root2]+=s[root1];
+        s[root1]=root2;
+}
     struct CSNode*firstchild,*nextsibling;
 }CSNode,*CSTree;
 
