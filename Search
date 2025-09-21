@@ -1,0 +1,37 @@
+//查找
+//顺序查找
+//从头到尾查找
+typedef struct{
+    ElemType *Elem;
+    int Tablelen;
+}SSTable;
+int search-seq(SSTable ST,ELemType key){
+    int i;
+    for(i=0;i<ST.Tablelen&&ST.Elem[i]!=key;i++)
+        return i==ST.Tablelen? -1:i;
+}
+//查找效率ASL成功=（n+1）/2 ASL失败=n+1
+
+//二分查找
+//仅仅适用于有序的顺序表
+typedef struct{
+    ElemType *Elem;
+    int Tablelen;
+}SSTable;
+int Binary-search(SSTable L,Elemtype key){
+    int low=0,high=L.Tablelen-1;
+    while(low<=high){
+        int mid = (low+high)/2;
+        if(L.elem[mid]=key)
+            return mid;
+        else if(L.Elem[mid]>key)
+            high = mid -1;
+        else
+            low = mid + 1;
+    }
+    return -1;
+}
+//二分查找判定树
+//对于任何一个结点，右子树结点数-左子树结点数=0或者1
+//只有最下面一层不满，判定树结点关键字：左《中《右
+//树高h=log2（n+1），时间复杂度O（log2n）
